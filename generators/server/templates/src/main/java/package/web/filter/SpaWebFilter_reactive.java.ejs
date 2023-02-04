@@ -18,6 +18,7 @@
 -%>
 package <%= packageName %>.web.filter;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
@@ -45,6 +46,7 @@ public class SpaWebFilter implements WebFilter {
             !path.contains(".") &&
             path.matches("/(.*)")
         ) {
+            exchange.getResponse().getHeaders().add(HttpHeaders.LOCATION, "/index.html");
             return chain.filter(exchange.mutate().request(exchange.getRequest().mutate().path("/index.html").build() ).build());
         }
         return chain.filter(exchange);
